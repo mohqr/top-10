@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOP 10 - لعبة التخمين العربية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #2b3e50;
+            --text-muted: #7f8c8d;
+            --primary-green: #27ae60;
+            --primary-green-hover: #219653;
+            --accent-color: #2980b9;
+            --danger-color: #c0392b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        /* اللوغو */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo-top {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+        .logo-bottom {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-green);
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-top: 4px;
+        }
+
+        /* شاشة البداية والتصنيفات */
+        .setup-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .select-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+            background: #fff;
+            color: var(--text-main);
+        }
+        select:focus, input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+        }
+
+        .btn {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: var(--primary-green-hover);
+        }
+        .btn-secondary {
+            background-color: var(--accent-color);
+        }
+        .btn-secondary:hover {
+            background-color: #2471a3;
+        }
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        .btn-danger:hover {
+            background-color: #a93226;
+        }
+
+        .random-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* معلومات اللعبة */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .question-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .hearts {
+            color: var(--danger-color);
+            font-size: 18px;
+        }
+
+        /* صندوق الإدخال والاقتراحات */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .suggestions-box {
+            position: absolute;
+            top: 105%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            max-height: 180px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: none;
+        }
+        .suggestion-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .suggestion-item:hover {
+            background-color: #e8f8f5;
+            color: var(--primary-green);
+        }
+
+        /* جدول النتائج */
+        .table-container {
+            max-height: 350px;
+            overflow-y: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            background: white;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+        th {
+            background-color: #f8fafc;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+        .row-hidden {
+            background-color: #fafbfc;
+            color: var(--text-muted);
+        }
+        .row-revealed {
+            background-color: #e8f8f5;
+            color: var(--primary-green);
+            font-weight: 700;
+        }
+        .row-surrendered {
+            background-color: #fdedec;
+            color: var(--danger-color);
+        }
+
+        .actions-footer {
+            display: flex;
+            gap: 10px;
+        }
+
+        .download-guide {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- اللوغو -->
+        <div class="logo-container">
+            <div class="logo-top">TOP</div>
+            <div class="logo-bottom">10</div>
+        </div>
+
+        <!-- شاشة اختيار الأسئلة -->
+        <div id="setupScreen" class="setup-section">
+            <div class="select-group">
+                <label>اختر التصنيف:</label>
+                <select id="categorySelect" onchange="updateQuestionsList()">
+                    <option value="games">ألعاب فيديو</option>
+                    <option value="football">كرة قدم</option>
+                </select>
+            </div>
+            <div class="select-group">
+                <label>اختر السؤال المحدد:</label>
+                <select id="questionSelect"></select>
+            </div>
+            
+            <div class="random-box">
+                <button class="btn" style="flex: 2;" onclick="startSelectedGame()">بدء السؤال المختار</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="startRandomGame()">🎲 سؤال عشوائي</button>
+            </div>
+        </div>
+
+        <!-- شاشة اللعب -->
+        <div id="gameScreen" style="display: none;">
+            <div class="game-header">
+                <div id="activeQuestionTitle" class="question-title"></div>
+                <button class="btn" style="padding: 6px 12px; font-size: 13px; background:#7f8c8d;" onclick="backToSetup()">القائمة الرئيسية</button>
+            </div>
+
+            <div class="stats-bar">
+                <div id="scoreCounter">الإجابات الصحيحة: 0 / 10</div>
+                <div class="hearts" id="heartsDisplay">❤️❤️❤️❤️❤️</div>
+            </div>
+
+            <div class="input-wrapper">
+                <input type="text" id="guessInput" placeholder="اكتب إجابتك هنا (عربي أو إنجليزي أو اختصار)..." oninput="handleInput()" autocomplete="off">
+                <div id="suggestionsBox" class="suggestions-box"></div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">#</th>
+                            <th>الإجابة</th>
+                            <th style="width: 140px; text-align: left;" id="metricHeader">القيمة (تظهر عند الاستسلام)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="answersTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="actions-footer">
+                <button class="btn btn-danger" style="flex: 1;" onclick="surrenderGame()">استسلام وكشف الإجابات</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="restartGame()">إعادة الجولة</button>
+            </div>
+        </div>
+
+        <div class="download-guide">
+            💡 لحفظ الموقع: انسخ الكود، احفظه في ملف <code>index.html</code> وارفعـه على <a href="https://app.netlify.com/drop" target="_blank" style="color:var(--primary-green);">Netlify Drop</a> مجاناً!
+        </div>
+    </div>
+
+    <script>
+        // قاعدة البيانات للأسئلة
+        const database = {
+            games: [
+                {
+                    title: "أكثر 10 ألعاب فيديو مبيعاً في التاريخ",
+                    metricName: "المبيعات",
+                    answers: [
+                        { name: "مينكرافت", alt: ["minecraft", "مين كرافت", "ماين كرافت"], value: "300 مليون" },
+                        { name: "جراند ثفت أوتو 5", alt: ["gta 5", "gta5", "قراند 5", "جراند 5", "gta v"], value: "200 مليون" },
+                        { name: "تتريس", alt: ["tetris"], value: "520 مليون" },
+                        { name: "نينتندو سويتش سبورتس", alt: ["nintendo switch sports"], value: "14 مليون" },
+                        { name: "ببجي موبايل", alt: ["pubg", "pubg mobile", "ببجي"], value: "150 مليون" },
+                        { name: "سوبر ماريو برذرز", alt: ["super mario bros"], value: "58 مليون" },
+                        { name: "ماريو كارت 8 ديلوكس", alt: ["mario kart 8", "ماريو كارت"], value: "62 مليون" },
+                        { name: "ريد ديد ريديمبشن 2", alt: ["rdr2", "red dead redemption 2", "ريد ديد 2"], value: "65 مليون" },
+                        { name: "تيراريا", alt: ["terraria"], value: "58 مليون" },
+                        { name: "وي سبورتس", alt: ["wii sports"], value: "82 مليون" }
+                    ]
+                },
+                {
+                    title: "أكثر 10 سلاسل ألعاب مبيعاً في التاريخ",
+                    metricName: "إجمالي المبيعات",
+                    answers: [
+                        { name: "ماريو", alt: ["mario"], value: "830 مليون" },
+                        { name: "تتريس", alt: ["tetris"], value: "520 مليون" },
+                        { name: "بوكيمون", alt: ["pokemon"], value: "480 مليون" },
+                        { name: "كول آف ديوتي", alt: ["call of duty", "cod"], value: "425 مليون" },
+                        { name: "جي تي إيه", alt: ["gta", "grand theft auto"], value: "410 مليون" },
+                        { name: "فييفا", alt: ["fifa", "ea sports fc"], value: "325 مليون" },
+                        { name: "مينكرافت", alt: ["minecraft"], value: "300 مليون" },
+                        { name: "ليغو", alt: ["lego"], value: "200 مليون" },
+                        { name: "ذا سيمز", alt: ["the sims"], value: "200 مليون" },
+                        { name: "سونيك", alt: ["sonic"], value: "160 مليون" }
+                    ]
+                }
+            ],
+            football: [
+                {
+                    title: "أكثر 10 هدافين في تاريخ دوري أبطال أوروبا",
+                    metricName: "الأهداف",
+                    answers: [
+                        { name: "كريستيانو رونالدو", alt: ["ronaldo", "رونالدو", "كريستيانو", "cr7"], value: "140 هدف" },
+                        { name: "ليونيل ميسي", alt: ["messi", "ميسي", "ليونيل ميسي"], value: "129 هدف" },
+                        { name: "روبرت ليفاندوفسكي", alt: ["lewandowski", "ليفاندوفسكي"], value: "94 هدف" },
+                        { name: "كريم بنزيما", alt: ["benzema", "بنزيما"], value: "90 هدف" },
+                        { name: "راؤول غونزاليس", alt: ["raul", "راؤول"], value: "71 هدف" },
+                        { name: "رود فان نيستلروي", alt: ["nistelrooy", "نيستلروي"], value: "56 هدف" },
+                        { name: "توماس مولر", alt: ["muller", "مولر"], value: "54 هدف" },
+                        { name: "تييري هنري", alt: ["henry", "هنري"], value: "50 هدف" },
+                        { name: "زلاتان إبراهيموفيتش", alt: ["ibrahimovic", "زلاتان"], value: "48 هدف" },
+                        { name: "أندري شيفتشينكو", alt: ["shevchenko", "شيفتشينكو"], value: "48 هدف" }
+                    ]
+                }
+            ]
+        };
+
+        let currentQuestion = null;
+        let foundAnswers = [];
+        let wrongAttempts = 5;
+        let isGameOver = false;
+
+        window.onload = function() {
+            updateQuestionsList();
+        };
+
+        function updateQuestionsList() {
+            const cat = document.getElementById('categorySelect').value;
+            const qSelect = document.getElementById('questionSelect');
+            qSelect.innerHTML = '';
+            database[cat].forEach((q, index) => {
+                let opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = q.title;
+                qSelect.appendChild(opt);
+            });
+        }
+
+        function startSelectedGame() {
+            const cat = document.getElementById('categorySelect').value;
+            const qIndex = document.getElementById('questionSelect').value;
+            initGame(database[cat][qIndex]);
+        }
+
+        function startRandomGame() {
+            // تجميع كل الأسئلة من كل التصنيفات
+            let allQuestions = [];
+            for (let cat in database) {
+                allQuestions = allQuestions.concat(database[cat]);
+            }
+            // اختيار سؤال عشوائي
+            const randomIndex = Math.floor(Math.random() * allQuestions.length);
+            initGame(allQuestions[randomIndex]);
+        }
+
+        function initGame(questionObj) {
+            currentQuestion = questionObj;
+            foundAnswers = new Array(currentQuestion.answers.length).fill(false);
+            wrongAttempts = 5;
+            isGameOver = false;
+
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('activeQuestionTitle').textContent = currentQuestion.title;
+            document.getElementById('metricHeader').textContent = currentQuestion.metricName;
+            
+            document.getElementById('guessInput').value = '';
+            document.getElementById('guessInput').disabled = false;
+            
+            renderTable();
+            updateStats();
+        }
+
+        function backToSetup() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('setupScreen').style.display = 'flex';
+        }
+
+        function renderTable(revealedAll = false) {
+            const tbody = document.getElementById('answersTableBody');
+            tbody.innerHTML = '';
+
+            currentQuestion.answers.forEach((ans, index) => {
+                let tr = document.createElement('tr');
+                let isFound = foundAnswers[index];
+
+                if (isFound) {
+                    tr.className = 'row-revealed';
+                    tr.innerHTML = `<td>${index + 1}</td><td><strong>${ans.name}</strong></td><td style="text-align: left;">${ans.value}</td>`;
+                } else if (revealedAll) {
+                    tr.className = 'row-surrendered';
+                    tr.innerHTML = `<td>${index + 1}</td><td>${ans.name}</td><td style="text-align: left;">${ans.value}</td>`;
+                } else {
+                    tr.className = 'row-hidden';
+                    tr.innerHTML = `<td>${index + 1}</td><td>؟؟؟؟؟؟؟؟؟</td><td style="text-align: left;">-</td>`;
+                }
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateStats() {
+            const score = foundAnswers.filter(Boolean).length;
+            document.getElementById('scoreCounter').textContent = `الإجابات الصحيحة: ${score} / 10`;
+            document.getElementById('heartsDisplay').textContent = '❤️'.repeat(wrongAttempts);
+        }
+
+        function handleInput() {
+            if (isGameOver) return;
+            const inputVal = document.getElementById('guessInput').value.trim();
+            const box = document.getElementById('suggestionsBox');
+
+            if (inputVal.length < 2) {
+                box.style.display = 'none';
+                return;
+            }
+
+            checkGuess(inputVal, true);
+
+            let matches = [];
+            currentQuestion.answers.forEach((ans, idx) => {
+                if (!foundAnswers[idx]) {
+                    if (ans.name.includes(inputVal) || ans.alt.some(a => a.includes(inputVal))) {
+                        matches.push(ans.name);
+                    }
+                }
+            });
+
+            if (matches.length > 0) {
+                box.innerHTML = '';
+                matches.slice(0, 5).forEach(m => {
+                    let div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.textContent = m;
+                    div.onclick = function() {
+                        document.getElementById('guessInput').value = m;
+                        box.style.display = 'none';
+                        checkGuess(m, false);
+                    };
+                    box.appendChild(div);
+                });
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+            }
+        }
+
+        function cleanText(txt) {
+            return txt.toLowerCase()
+                .replace(/[أإآا]/g, 'ا')
+                .replace(/ة/g, 'ه')
+                .replace(/ى/g, 'ي')
+                .replace(/[^a-z0-9أ-ي]/g, '');
+        }
+
+        function checkGuess(val, isTypingCheck) {
+            if (isGameOver) return;
+            const cleanedInput = cleanText(val);
+            if (!cleanedInput) return;
+
+            let matchedIndex = -1;
+
+            currentQuestion.answers.forEach((ans, idx) => {
+                if (!foundAnswers[idx]) {
+                    let mainClean = cleanText(ans.name);
+                    let altCleans = ans.alt.map(a => cleanText(a));
+
+                    if (cleanedInput === mainClean || altCleans.includes(cleanedInput)) {
+                        matchedIndex = idx;
+                    }
+                }
+            });
+
+            if (matchedIndex !== -1) {
+                foundAnswers[matchedIndex] = true;
+                document.getElementById('guessInput').value = '';
+                document.getElementById('suggestionsBox').style.display = 'none';
+                renderTable();
+                updateStats();
+
+                if (foundAnswers.every(Boolean)) {
+                    alert('🎉 مبروك! لقد أجبت على جميع الأسئلة بنجاح!');
+                    isGameOver = true;
+                }
+            } else if (!isTypingCheck) {
+                wrongAttempts--;
+                document.getElementById('guessInput').value = '';
+                document.getElementById('suggestionsBox').style.display = 'none';
+                updateStats();
+
+                if (wrongAttempts <= 0) {
+                    isGameOver = true;
+                    alert('❌ انتهت محاولاتك!');
+                    surrenderGame();
+                }
+            }
+        }
+
+        document.getElementById('guessInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkGuess(this.value, false);
+            }
+        });
+
+        function surrenderGame() {
+            isGameOver = true;
+            document.getElementById('guessInput').disabled = true;
+            document.getElementById('suggestionsBox').style.display = 'none';
+            renderTable(true);
+        }
+
+        function restartGame() {
+            initGame(currentQuestion);
+        }
+    </script>
+</body>
+</html>
