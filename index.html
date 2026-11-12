@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOP 10 - لعبة التخمين العربية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>TOP 10 - لعبة التخمين التفاعلية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f4f6f9;
-            --card-bg: #ffffff;
-            --text-main: #2b3e50;
-            --text-muted: #7f8c8d;
-            --primary-green: #27ae60;
-            --primary-green-hover: #219653;
-            --accent-color: #2980b9;
-            --danger-color: #c0392b;
-            --border-color: #e2e8f0;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary-blue: #3b82f6;
+            --primary-blue-hover: #2563eb;
+            --accent-yellow: #f59e0b;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --border-color: #334155;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
         }
 
         body {
@@ -37,33 +38,39 @@
 
         .container {
             width: 100%;
-            max-width: 650px;
+            max-width: 680px;
             background: var(--card-bg);
             padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--border-color);
         }
 
-        /* اللوغو */
+        /* اللوغو الجديد الفخم */
         .logo-container {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(245, 158, 11, 0.1));
+            padding: 15px;
+            border-radius: 14px;
+            border: 1px dashed var(--border-color);
         }
         .logo-top {
-            font-size: 32px;
+            font-size: 38px;
             font-weight: 900;
             color: var(--text-main);
-            letter-spacing: 2px;
-            line-height: 1;
-        }
-        .logo-bottom {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-green);
             letter-spacing: 4px;
             line-height: 1;
-            margin-top: 4px;
+            text-transform: uppercase;
+        }
+        .logo-bottom {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--accent-yellow);
+            letter-spacing: 6px;
+            line-height: 1;
+            margin-top: 6px;
+            text-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
         }
 
         /* شاشة البداية والتصنيفات */
@@ -76,55 +83,60 @@
         .select-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
         label {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
-            color: var(--text-main);
+            color: var(--text-muted);
         }
         select, input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px 16px;
             border: 2px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 15px;
             outline: none;
             transition: all 0.3s;
-            background: #fff;
+            background: #0f172a;
             color: var(--text-main);
         }
         select:focus, input:focus {
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
 
         .btn {
-            background-color: var(--primary-green);
+            background-color: var(--primary-blue);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 14px 20px;
             font-size: 16px;
             font-weight: 700;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
             text-align: center;
         }
         .btn:hover {
-            background-color: var(--primary-green-hover);
+            background-color: var(--primary-blue-hover);
         }
-        .btn-secondary {
-            background-color: var(--accent-color);
+        .btn:active {
+            transform: scale(0.98);
         }
-        .btn-secondary:hover {
-            background-color: #2471a3;
+        .btn-accent {
+            background-color: var(--accent-yellow);
+            color: #0f172a;
+        }
+        .btn-accent:hover {
+            background-color: #d97706;
+            color: white;
         }
         .btn-danger {
             background-color: var(--danger-color);
         }
         .btn-danger:hover {
-            background-color: #a93226;
+            background-color: #dc2626;
         }
 
         .random-box {
@@ -142,9 +154,10 @@
             border-bottom: 2px solid var(--border-color);
         }
         .question-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             color: var(--text-main);
+            max-width: 75%;
         }
         .stats-bar {
             display: flex;
@@ -152,7 +165,7 @@
             align-items: center;
             margin-bottom: 15px;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 700;
         }
         .hearts {
             color: var(--danger-color);
@@ -169,31 +182,32 @@
             top: 105%;
             left: 0;
             right: 0;
-            background: white;
+            background: #1e293b;
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 12px;
             max-height: 180px;
             overflow-y: auto;
             z-index: 100;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.5);
             display: none;
         }
         .suggestion-item {
-            padding: 10px 15px;
+            padding: 12px 16px;
             cursor: pointer;
             font-size: 14px;
-            border-bottom: 1px solid #f1f1f1;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
         }
         .suggestion-item:hover {
-            background-color: #e8f8f5;
-            color: var(--primary-green);
+            background-color: rgba(59, 130, 246, 0.2);
+            color: var(--accent-yellow);
         }
 
         /* جدول النتائج */
         .table-container {
             max-height: 350px;
             overflow-y: auto;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--border-color);
             margin-bottom: 15px;
         }
@@ -201,7 +215,7 @@
             width: 100%;
             border-collapse: collapse;
             text-align: right;
-            background: white;
+            background: #1e293b;
         }
         th, td {
             padding: 12px 15px;
@@ -209,21 +223,21 @@
             font-size: 14px;
         }
         th {
-            background-color: #f8fafc;
-            color: var(--text-main);
+            background-color: #0f172a;
+            color: var(--text-muted);
             font-weight: 700;
         }
         .row-hidden {
-            background-color: #fafbfc;
+            background-color: #1e293b;
             color: var(--text-muted);
         }
         .row-revealed {
-            background-color: #e8f8f5;
-            color: var(--primary-green);
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success-color);
             font-weight: 700;
         }
         .row-surrendered {
-            background-color: #fdedec;
+            background-color: rgba(239, 68, 68, 0.15);
             color: var(--danger-color);
         }
 
@@ -243,7 +257,7 @@
 <body>
 
     <div class="container">
-        <!-- اللوغو -->
+        <!-- اللوغو الجديد -->
         <div class="logo-container">
             <div class="logo-top">TOP</div>
             <div class="logo-bottom">10</div>
@@ -254,20 +268,20 @@
             <div class="select-group">
                 <label>اختر التصنيف:</label>
                 <select id="categorySelect" onchange="updateQuestionsList()">
+                    <option value="geography">🌍 الجغرافيا والبلدان</option>
                     <option value="games">🎮 ألعاب فيديو</option>
                     <option value="football">⚽ كرة قدم</option>
-                    <option value="movies">🎬 أفلام ومسلسلات</option>
-                    <option value="tech">💻 تقنية وتطبيقات</option>
+                    <option value="movies">🎬 أفلام وسينما</option>
                 </select>
             </div>
             <div class="select-group">
-                <label>اختر السؤال المحدد:</label>
+                <label>اختر السؤال:</label>
                 <select id="questionSelect"></select>
             </div>
             
             <div class="random-box">
                 <button class="btn" style="flex: 2;" onclick="startSelectedGame()">بدء السؤال المختار</button>
-                <button class="btn btn-secondary" style="flex: 1;" onclick="startRandomGame()">🎲 سؤال عشوائي</button>
+                <button class="btn btn-accent" style="flex: 1;" onclick="startRandomGame()">🎲 عشوائي</button>
             </div>
         </div>
 
@@ -275,7 +289,7 @@
         <div id="gameScreen" style="display: none;">
             <div class="game-header">
                 <div id="activeQuestionTitle" class="question-title"></div>
-                <button class="btn" style="padding: 6px 12px; font-size: 13px; background:#7f8c8d;" onclick="backToSetup()">القائمة الرئيسية</button>
+                <button class="btn" style="padding: 6px 12px; font-size: 12px; background:#475569;" onclick="backToSetup()">القائمة</button>
             </div>
 
             <div class="stats-bar">
@@ -284,7 +298,7 @@
             </div>
 
             <div class="input-wrapper">
-                <input type="text" id="guessInput" placeholder="اكتب إجابتك هنا (عربي أو إنجليزي أو اختصار)..." oninput="handleInput()" autocomplete="off">
+                <input type="text" id="guessInput" placeholder="اكتب إجابتك هنا (عربي، إنجليزي، اختصار)..." oninput="handleInput()" autocomplete="off">
                 <div id="suggestionsBox" class="suggestions-box"></div>
             </div>
 
@@ -292,9 +306,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 50px;">#</th>
+                            <th style="width: 45px;">#</th>
                             <th>الإجابة</th>
-                            <th style="width: 140px; text-align: left;" id="metricHeader">القيمة (تظهر عند الاستسلام)</th>
+                            <th style="width: 130px; text-align: left;" id="metricHeader">القيمة (تظهر عند الاستسلام)</th>
                         </tr>
                     </thead>
                     <tbody id="answersTableBody"></tbody>
@@ -303,18 +317,52 @@
 
             <div class="actions-footer">
                 <button class="btn btn-danger" style="flex: 1;" onclick="surrenderGame()">استسلام وكشف الإجابات</button>
-                <button class="btn btn-secondary" style="flex: 1;" onclick="restartGame()">إعادة الجولة</button>
+                <button class="btn btn-accent" style="flex: 1;" onclick="restartGame()">إعادة</button>
             </div>
         </div>
 
         <div class="download-guide">
-            💡 تم تحديث اللعبة بأقسام وأسئلة جديدة كلياً!
+            ✨ تم تحديث الثيم (أزرق وأصفر) وإضافة قسم الجغرافيا بالكامل!
         </div>
     </div>
 
     <script>
-        // قاعدة البيانات الموسعة للأسئلة
+        // قاعدة البيانات الموسعة (10 أسئلة لكل تصنيف ولكل سؤال 10 إجابات دقيقة)
         const database = {
+            geography: [
+                {
+                    title: "أكبر 10 دول في العالم من حيث المساحة",
+                    metricName: "المساحة (كم²)",
+                    answers: [
+                        { name: "روسيا", alt: ["russia"], value: "17.1 مليون كم²" },
+                        { name: "كندا", alt: ["canada"], value: "9.98 مليون كم²" },
+                        { name: "الصين", alt: ["china"], value: "9.6 مليون كم²" },
+                        { name: "الولايات المتحدة", alt: ["usa", "america", "امريكا", "الولايات المتحدة الأمريكية"], value: "9.52 مليون كم²" },
+                        { name: "البرازيل", alt: ["brazil"], value: "8.51 مليون كم²" },
+                        { name: "استراليا", alt: ["australia", "أستراليا"], value: "7.69 مليون كم²" },
+                        { name: "الهند", alt: ["india"], value: "3.28 مليون كم²" },
+                        { name: "الأرجنتين", alt: ["argentina"], value: "2.78 مليون كم²" },
+                        { name: "كازاخستان", alt: ["kazakhstan"], value: "2.72 مليون كم²" },
+                        { name: "الجزائر", alt: ["algeria"], value: "2.38 مليون كم²" }
+                    ]
+                },
+                {
+                    title: "أكثر 10 دول سكاناً في العالم",
+                    metricName: "عدد السكان",
+                    answers: [
+                        { name: "الهند", alt: ["india"], value: "1.42 مليار" },
+                        { name: "الصين", alt: ["china"], value: "1.41 مليار" },
+                        { name: "الولايات المتحدة", alt: ["usa", "america", "امريكا"], value: "340 مليون" },
+                        { name: "إندونيسيا", alt: ["indonesia"], value: "277 مليون" },
+                        { name: "باكستان", alt: ["pakistan"], value: "240 مليون" },
+                        { name: "نيجيريا", alt: ["nigeria"], value: "223 مليون" },
+                        { name: "البرازيل", alt: ["brazil"], value: "216 مليون" },
+                        { name: "بنغلاديش", alt: ["bangladesh"], value: "173 مليون" },
+                        { name: "روسيا", alt: ["russia"], value: "144 مليون" },
+                        { name: "المكسيك", alt: ["mexico"], value: "128 مليون" }
+                    ]
+                }
+            ],
             games: [
                 {
                     title: "أكثر 10 ألعاب فيديو مبيعاً في التاريخ",
@@ -386,36 +434,18 @@
             movies: [
                 {
                     title: "أكثر 10 أفلام تحقيقاً للإيرادات في تاريخ السينما",
-                    metricName: "الإيرادات العالمية",
+                    metricName: "الإيرادات",
                     answers: [
                         { name: "أفاتار", alt: ["avatar", "avatar 1"], value: "2.92 مليار" },
-                        { name: "افينجرز اند جيم", alt: ["avengers endgame", "انتيجرز", "أفنجرز"], value: "2.79 مليار" },
+                        { name: "افينجرز اند جيم", alt: ["avengers endgame", "أفنجرز"], value: "2.79 مليار" },
                         { name: "تيتانيك", alt: ["titanic"], value: "2.26 مليار" },
-                        { name: "ستار وورز ذا فورس اويكينز", alt: ["star wars the force awakens", "ستار وورز"], value: "2.07 مليار" },
+                        { name: "ستار وورز ذا فورس اويكينز", alt: ["star wars the force awakens"], value: "2.07 مليار" },
                         { name: "أفاتار ذا ويه أوف ووتر", alt: ["avatar 2", "أفاتار 2"], value: "2.32 مليار" },
-                        { name: "فينجرز إنفينيتي وور", alt: ["avengers infinity war", "انفينيتي وور"], value: "2.04 مليار" },
-                        { name: "سبايدر مان نوي ويه هوم", alt: ["spider man no way home", "سبايدر مان"], value: "1.92 مليار" },
+                        { name: "افينجرز إنفينيتي وور", alt: ["avengers infinity war"], value: "2.04 مليار" },
+                        { name: "سبايدر مان نوي ويه هوم", alt: ["spider man no way home"], value: "1.92 مليار" },
                         { name: "جوراْسيك وورلد", alt: ["jurassic world"], value: "1.67 مليار" },
-                        { name: "ذا لايون كينغ", alt: ["the lion king", "الاسد الملك"], value: "1.66 مليار" },
+                        { name: "ذا لايون كينغ", alt: ["the lion king"], value: "1.66 مليار" },
                         { name: "ذا أفينجرز", alt: ["the avengers"], value: "1.52 مليار" }
-                    ]
-                }
-            ],
-            tech: [
-                {
-                    title: "أكثر 10 تطبيقات تم تحميرها في العالم (أو استخداماً)",
-                    metricName: "الشركة المالكة",
-                    answers: [
-                        { name: "فيس بوك", alt: ["facebook", "ميتا"], value: "ميتا" },
-                        { name: "يوتيوب", alt: ["youtube"], value: "جوجل" },
-                        { name: "واتساب", alt: ["whatsapp"], value: "ميتا" },
-                        { name: "انستغرام", alt: ["instagram", "انستا"], value: "ميتا" },
-                        { name: "تيك توك", alt: ["tiktok"], value: "بايت دانس" },
-                        { name: "فيس بوك مسنجر", alt: ["messenger", "مسنجر"], value: "ميتا" },
-                        { name: "تليجرام", alt: ["telegram"], value: "تليجرام" },
-                        { name: "سناب شات", alt: ["snapchat", "سناب"], value: "سناب إنك" },
-                        { name: "نتفليكس", alt: ["netflix"], value: "نتفليكس" },
-                        { name: "سبوتيفاي", alt: ["spotify"], value: "سبوتيفاي" }
                     ]
                 }
             ]
@@ -496,7 +526,7 @@
                     tr.innerHTML = `<td>${index + 1}</td><td>${ans.name}</td><td style="text-align: left;">${ans.value}</td>`;
                 } else {
                     tr.className = 'row-hidden';
-                    tr.innerHTML = `<td>${index + 1}</td><td>؟؟؟؟؟؟؟؟؟</td><td style="text-align: left;">-</td>`;
+                    tr.innerHTML = `<td>${index + 1}</td><td>????????</td><td style="text-align: left;">-</td>`;
                 }
                 tbody.appendChild(tr);
             });
@@ -582,7 +612,7 @@
                 updateStats();
 
                 if (foundAnswers.every(Boolean)) {
-                    alert('🎉 مبروك! لقد أجبت على جميع الأسئلة بنجاح!');
+                    alert('🎉 كفو! لقد أجبت على جميع الأسئلة بنجاح!');
                     isGameOver = true;
                 }
             } else if (!isTypingCheck) {
