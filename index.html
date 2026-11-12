@@ -268,6 +268,7 @@
             <div class="select-group">
                 <label>اختر التصنيف:</label>
                 <select id="categorySelect" onchange="updateQuestionsList()">
+                    <option value="troll">🤪 أسئلة ترول وهزلية (لكنها حقيقية!)</option>
                     <option value="geography">🌍 الجغرافيا والبلدان</option>
                     <option value="games">🎮 ألعاب فيديو</option>
                     <option value="football">⚽ كرة قدم</option>
@@ -308,7 +309,7 @@
                         <tr>
                             <th style="width: 45px;">#</th>
                             <th>الإجابة</th>
-                            <th style="width: 130px; text-align: left;" id="metricHeader">القيمة (تظهر عند الاستسلام)</th>
+                            <th style="width: 140px; text-align: left;" id="metricHeader">التفاصيل (عند الاستسلام)</th>
                         </tr>
                     </thead>
                     <tbody id="answersTableBody"></tbody>
@@ -322,22 +323,56 @@
         </div>
 
         <div class="download-guide">
-            ✨ تم تحديث الثيم (أزرق وأصفر) وإضافة قسم الجغرافيا بالكامل!
+            🔥 تم إضافة قسم الأسئلة الهزلية (ترول) وتحديث التصنيفات بالكامل!
         </div>
     </div>
 
     <script>
-        // قاعدة البيانات الموسعة (10 أسئلة لكل تصنيف ولكل سؤال 10 إجابات دقيقة)
+        // قاعدة البيانات الموسعة تشمل قسم الترول الهزلي الجديد والتصنيفات الأخرى
         const database = {
+            troll: [
+                {
+                    title: "أكثر 10 حيوانات كسلاناً في العالم (النوم مفتاح الحياة)",
+                    metricName: "ساعات النوم يومياً",
+                    answers: [
+                        { name: "الكسلان", alt: ["sloth", "حيوان الكسلان"], value: "20 ساعة" },
+                        { name: "الأوبسوم", alt: ["opossum"], value: "19 ساعة" },
+                        { name: "البايثون", alt: ["python", "ثعبان البايثون"], value: "18 ساعة" },
+                        { name: "الهامستر", alt: ["hamster"], value: "14 ساعة" },
+                        { name: "القطة", alt: ["cat", "القطط"], value: "13-14 ساعة" },
+                        { name: "السنجاب", alt: ["squirrel"], value: "14 ساعة" },
+                        { name: "الفيل", alt: ["elephant"], value: "4 ساعات فقط!" },
+                        { name: "الزرافة", alt: ["giraffe"], value: "ساعتان فقط!" },
+                        { name: "الحصان", alt: ["horse"], value: "3 ساعات" },
+                        { name: "الحمار الوحشي", alt: ["zebra"], value: "3 ساعات" }
+                    ]
+                },
+                {
+                    title: "أغلى 10 أطعمة ومأكولات مبالغ في أسعارها بالعالم",
+                    metricName: "السعر التقريبي",
+                    answers: [
+                        { name: "ألماس كافيار", alt: ["almas caviar"], value: "25 ألف دولار" },
+                        { name: "الكمأة البيضاء", alt: ["white truffle"], value: "10 آلاف دولار" },
+                        { name: "زعفران", alt: ["saffron"], value: "5 آلاف دولار للكيلو" },
+                        { name: "بطيخ يوباري", alt: ["yubari melon"], value: "10 آلاف دولار للحبّة" },
+                        { name: "قهوة كوب لواك", alt: ["kopi luwak", "قهوة القطة"], value: "600 دولار للكيلو" },
+                        { name: "جبية الحمير", alt: ["pule cheese"], value: "600 دولار للكيلو" },
+                        { name: "لحم واغيو", alt: ["wagyu beef", "واغيو"], value: "200+ دولار للوجبة" },
+                        { name: "فطر ماتسوتاكي", alt: ["matsutake mushrooms"], value: "1000 دولار للكيلو" },
+                        { name: "بطاطس دي بونوت", alt: ["bonnotte potatoes"], value: "500 دولار للكيلو" },
+                        { name: "شوكولاتة فريز هوت", alt: ["frrrozen haute chocolate"], value: "25 ألف دولار الكأس" }
+                    ]
+                }
+            ],
             geography: [
                 {
                     title: "أكبر 10 دول في العالم من حيث المساحة",
-                    metricName: "المساحة (كم²)",
+                    metricName: "المساحة",
                     answers: [
                         { name: "روسيا", alt: ["russia"], value: "17.1 مليون كم²" },
                         { name: "كندا", alt: ["canada"], value: "9.98 مليون كم²" },
                         { name: "الصين", alt: ["china"], value: "9.6 مليون كم²" },
-                        { name: "الولايات المتحدة", alt: ["usa", "america", "امريكا", "الولايات المتحدة الأمريكية"], value: "9.52 مليون كم²" },
+                        { name: "الولايات المتحدة", alt: ["usa", "america", "امريكا"], value: "9.52 مليون كم²" },
                         { name: "البرازيل", alt: ["brazil"], value: "8.51 مليون كم²" },
                         { name: "استراليا", alt: ["australia", "أستراليا"], value: "7.69 مليون كم²" },
                         { name: "الهند", alt: ["india"], value: "3.28 مليون كم²" },
@@ -402,8 +437,8 @@
                     title: "أكثر 10 هدافين في تاريخ دوري أبطال أوروبا",
                     metricName: "الأهداف",
                     answers: [
-                        { name: "كريستيانو رونالدو", alt: ["ronaldo", "رونالدو", "كريستيانو", "cr7"], value: "140 هدف" },
-                        { name: "ليونيل ميسي", alt: ["messi", "ميسي", "ليونيل ميسي"], value: "129 هدف" },
+                        { name: "كريستيانو رونالدو", alt: ["ronaldo", "رونالدو", "cr7"], value: "140 هدف" },
+                        { name: "ليونيل ميسي", alt: ["messi", "ميسي"], value: "129 هدف" },
                         { name: "روبرت ليفاندوفسكي", alt: ["lewandowski", "ليفاندوفسكي"], value: "94 هدف" },
                         { name: "كريم بنزيما", alt: ["benzema", "بنزيما"], value: "90 هدف" },
                         { name: "راؤول غونزاليس", alt: ["raul", "راؤول"], value: "71 هدف" },
@@ -612,7 +647,7 @@
                 updateStats();
 
                 if (foundAnswers.every(Boolean)) {
-                    alert('🎉 كفو! لقد أجبت على جميع الأسئلة بنجاح!');
+                    alert('🎉 كفو! ختمت اللعبة بذكاء!');
                     isGameOver = true;
                 }
             } else if (!isTypingCheck) {
@@ -623,7 +658,7 @@
 
                 if (wrongAttempts <= 0) {
                     isGameOver = true;
-                    alert('❌ انتهت محاولاتك!');
+                    alert('❌ خلصت محاولاتك!');
                     surrenderGame();
                 }
             }
