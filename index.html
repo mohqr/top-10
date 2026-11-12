@@ -46,7 +46,7 @@
             border: 1px solid var(--border-color);
         }
 
-        /* اللوغو الجديد الفخم */
+        /* اللوغو الفخم */
         .logo-container {
             text-align: center;
             margin-bottom: 25px;
@@ -125,6 +125,7 @@
             transform: scale(0.98);
         }
         .btn-accent {
+            background-core: var(--accent-yellow);
             background-color: var(--accent-yellow);
             color: #0f172a;
         }
@@ -132,4 +133,553 @@
             background-color: #d97706;
             color: white;
         }
-        .btn
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .random-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* معلومات اللعبة */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .question-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-main);
+            max-width: 75%;
+        }
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .hearts {
+            color: var(--danger-color);
+            font-size: 18px;
+        }
+
+        /* صندوق الإدخال والاقتراحات */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .suggestions-box {
+            position: absolute;
+            top: 105%;
+            left: 0;
+            right: 0;
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            max-height: 180px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.5);
+            display: none;
+        }
+        .suggestion-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+        .suggestion-item:hover {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: var(--accent-yellow);
+        }
+
+        /* جدول النتائج */
+        .table-container {
+            max-height: 350px;
+            overflow-y: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            background: #1e293b;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+        th {
+            background-color: #0f172a;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+        .row-hidden {
+            background-color: #1e293b;
+            color: var(--text-muted);
+        }
+        .row-revealed {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success-color);
+            font-weight: 700;
+        }
+        .row-surrendered {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger-color);
+        }
+
+        .actions-footer {
+            display: flex;
+            gap: 10px;
+        }
+
+        .download-guide {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- اللوغو -->
+        <div class="logo-container">
+            <div class="logo-top">TOP</div>
+            <div class="logo-bottom">10</div>
+        </div>
+
+        <!-- شاشة اختيار الأسئلة -->
+        <div id="setupScreen" class="setup-section">
+            <div class="select-group">
+                <label>اختر التصنيف:</label>
+                <select id="categorySelect" onchange="updateQuestionsList()">
+                    <option value="weird">🔮 حقائق وألغاز غريبة وعجيبة</option>
+                    <option value="geography">🌍 الجغرافيا والبلدان</option>
+                    <option value="games">🎮 ألعاب فيديو</option>
+                    <option value="football">⚽ كرة قدم</option>
+                    <option value="movies">🎬 أفلام وسينما</option>
+                </select>
+            </div>
+            <div class="select-group">
+                <label>اختر السؤال:</label>
+                <select id="questionSelect"></select>
+            </div>
+            
+            <div class="random-box">
+                <button class="btn" style="flex: 2;" onclick="startSelectedGame()">بدء السؤال المختار</button>
+                <button class="btn btn-accent" style="flex: 1;" onclick="startRandomGame()">🎲 عشوائي</button>
+            </div>
+        </div>
+
+        <!-- شاشة اللعب -->
+        <div id="gameScreen" style="display: none;">
+            <div class="game-header">
+                <div id="activeQuestionTitle" class="question-title"></div>
+                <button class="btn" style="padding: 6px 12px; font-size: 12px; background:#475569;" onclick="backToSetup()">القائمة</button>
+            </div>
+
+            <div class="stats-bar">
+                <div id="scoreCounter">الإجابات الصحيحة: 0 / 10</div>
+                <div class="hearts" id="heartsDisplay">❤️❤️❤️❤️❤️</div>
+            </div>
+
+            <div class="input-wrapper">
+                <input type="text" id="guessInput" placeholder="اكتب إجابتك هنا (عربي، إنجليزي، اختصار)..." oninput="handleInput()" autocomplete="off">
+                <div id="suggestionsBox" class="suggestions-box"></div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">#</th>
+                            <th>الإجابة</th>
+                            <th style="width: 140px; text-align: left;" id="metricHeader">التفاصيل (عند الاستسلام)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="answersTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="actions-footer">
+                <button class="btn btn-danger" style="flex: 1;" onclick="surrenderGame()">استسلام وكشف الإجابات</button>
+                <button class="btn btn-accent" style="flex: 1;" onclick="restartGame()">إعادة</button>
+            </div>
+        </div>
+
+        <div class="download-guide">
+            ✨ تم استبدال قسم الترول وإضافة قسم الحقائق والأسئلة الغريبة!
+        </div>
+    </div>
+
+    <script>
+        const database = {
+            weird: [
+                {
+                    title: "أغرب 10 أشياء تم العثور عليها داخل بطون أسماك القرش",
+                    metricName: "الشيء الغريب",
+                    answers: [
+                        { name: "درع بلياردو", alt: ["درع بلياردو", "billiard armor"], value: "معدات قديمة" },
+                        { name: "صندوق بريد", alt: ["صندوق بريد", "mailbox"], value: "بريد بشري" },
+                        { name: "قنينة خمر أثرية", alt: ["زجاجة خمر", "bottle"], value: "من القرن 19" },
+                        { name: "معطف صوف", alt: ["معطف", "coat"], value: "معطف كامل" },
+                        { name: "كاميرا فيديو", alt: ["كاميرا", "camera"], value: "تسجيل كامل" },
+                        { name: "إطار سيارة", alt: ["إطار", "tire"], value: "إطار مطاطي" },
+                        { name: "درع حرب قديم", alt: ["درع", "armor"], value: "قطعة حديدية" },
+                        { name: "براميل معدنية", alt: ["برميل", "barrel"], value: "برميل نفط" },
+                        { name: "ساعة أثرية", alt: ["ساعة", "watch"], value: "ساعة يد" },
+                        { name: "هيكل مرآة سيارة", alt: ["مرآة", "mirror"], value: "قطعة سيارة" }
+                    ]
+                },
+                {
+                    title: "أغرب 10 قوانين غريبة لا تزال موجودة في دول العالم",
+                    metricName: "الدولة",
+                    answers: [
+                        { name: "إيطاليا", alt: ["italy"], value: "منع بناء القلاع من الرمل بالشواطئ" },
+                        { name: "سنغافورة", alt: ["singapore"], value: "ممنوع مضغ العلكة نهائياً" },
+                        { name: "الولايات المتحدة", alt: ["usa", "امريكا"], value: "منع صيد الحيتان من سيارة مكشوفة" },
+                        { name: "سويسرا", alt: ["switzerland"], value: "يمنع سحب سيفون الحمام بعد 10 ليلاً للشقق" },
+                        { name: "بريطانيا", alt: ["uk", "بريطانيا", "المملكة المتحدة"], value: "ممنوع الوفاة داخل البرلمان" },
+                        { name: "تايلاند", alt: ["thailand"], value: "ممنوع الخروج بدون ملابس داخلية" },
+                        { name: "فرنسا", alt: ["france"], value: "ممنوع تسمية خنزير باسم نابليون" },
+                        { name: "كندا", alt: ["canada"], value: "دفع العملات المعدنية الكبيرة ممنوع بالقانون" },
+                        { name: "أستراليا", alt: ["australia", "أستراليا"], value: "ممنوع تغيير لمبة الكهرباء إلا لفني مرخص" },
+                        { name: "الدنمارك", alt: ["denmark"], value: "تشغيل محرك السيارة لتدفئتها مكروه قانوناً" }
+                    ]
+                }
+            ],
+            geography: [
+                {
+                    title: "أكبر 10 دول في العالم من حيث المساحة",
+                    metricName: "المساحة",
+                    answers: [
+                        { name: "روسيا", alt: ["russia"], value: "17.1 مليون كم²" },
+                        { name: "كندا", alt: ["canada"], value: "9.98 مليون كم²" },
+                        { name: "الصين", alt: ["china"], value: "9.6 مليون كم²" },
+                        { name: "الولايات المتحدة", alt: ["usa", "america", "امريكا"], value: "9.52 مليون كم²" },
+                        { name: "البرازيل", alt: ["brazil"], value: "8.51 مليون كم²" },
+                        { name: "استراليا", alt: ["australia", "أستراليا"], value: "7.69 مليون كم²" },
+                        { name: "الهند", alt: ["india"], value: "3.28 مليون كم²" },
+                        { name: "الأرجنتين", alt: ["argentina"], value: "2.78 مليون كم²" },
+                        { name: "كازاخستان", alt: ["kazakhstan"], value: "2.72 مليون كم²" },
+                        { name: "الجزائر", alt: ["algeria"], value: "2.38 مليون كم²" }
+                    ]
+                },
+                {
+                    title: "أكثر 10 دول سكاناً في العالم",
+                    metricName: "عدد السكان",
+                    answers: [
+                        { name: "الهند", alt: ["india"], value: "1.42 مليار" },
+                        { name: "الصين", alt: ["china"], value: "1.41 مليار" },
+                        { name: "الولايات المتحدة", alt: ["usa", "america", "امريكا"], value: "340 مليون" },
+                        { name: "إندونيسيا", alt: ["indonesia"], value: "277 مليون" },
+                        { name: "باكستان", alt: ["pakistan"], value: "240 مليون" },
+                        { name: "نيجيريا", alt: ["nigeria"], value: "223 مليون" },
+                        { name: "البرازيل", alt: ["brazil"], value: "216 مليون" },
+                        { name: "بنغلاديش", alt: ["bangladesh"], value: "173 مليون" },
+                        { name: "روسيا", alt: ["russia"], value: "144 مليون" },
+                        { name: "المكسيك", alt: ["mexico"], value: "128 مليون" }
+                    ]
+                }
+            ],
+            games: [
+                {
+                    title: "أكثر 10 ألعاب فيديو مبيعاً في التاريخ",
+                    metricName: "المبيعات",
+                    answers: [
+                        { name: "مينكرافت", alt: ["minecraft", "مين كرافت", "ماين كرافت"], value: "300 مليون" },
+                        { name: "جراند ثفت أوتو 5", alt: ["gta 5", "gta5", "قراند 5", "جراند 5", "gta v"], value: "200 مليون" },
+                        { name: "تتريس", alt: ["tetris"], value: "520 مليون" },
+                        { name: "نينتندو سويتش سبورتس", alt: ["nintendo switch sports"], value: "14 مليون" },
+                        { name: "ببجي موبايل", alt: ["pubg", "pubg mobile", "ببجي"], value: "150 مليون" },
+                        { name: "سوبر ماريو برذرز", alt: ["super mario bros"], value: "58 مليون" },
+                        { name: "ماريو كارت 8 ديلوكس", alt: ["mario kart 8", "ماريو كارت"], value: "62 مليون" },
+                        { name: "ريد ديد ريديمبشن 2", alt: ["rdr2", "red dead redemption 2", "ريد ديد 2"], value: "65 مليون" },
+                        { name: "تيراريا", alt: ["terraria"], value: "58 مليون" },
+                        { name: "وي سبورتس", alt: ["wii sports"], value: "82 مليون" }
+                    ]
+                },
+                {
+                    title: "أكثر 10 سلاسل ألعاب مبيعاً في التاريخ",
+                    metricName: "إجمالي المبيعات",
+                    answers: [
+                        { name: "ماريو", alt: ["mario"], value: "830 مليون" },
+                        { name: "تتريس", alt: ["tetris"], value: "520 مليون" },
+                        { name: "بوكيمون", alt: ["pokemon"], value: "480 مليون" },
+                        { name: "كول آف ديوتي", alt: ["call of duty", "cod"], value: "425 مليون" },
+                        { name: "جي تي إيه", alt: ["gta", "grand theft auto"], value: "410 مليون" },
+                        { name: "فيفا", alt: ["fifa", "ea sports fc"], value: "325 مليون" },
+                        { name: "مينكرافت", alt: ["minecraft"], value: "300 مليون" },
+                        { name: "ليغو", alt: ["lego"], value: "200 مليون" },
+                        { name: "ذا سيمز", alt: ["the sims"], value: "200 مليون" },
+                        { name: "سونيك", alt: ["sonic"], value: "160 مليون" }
+                    ]
+                }
+            ],
+            football: [
+                {
+                    title: "أكثر 10 هدافين في تاريخ دوري أبطال أوروبا",
+                    metricName: "الأهداف",
+                    answers: [
+                        { name: "كريستيانو رونالدو", alt: ["ronaldo", "رونالدو", "cr7"], value: "140 هدف" },
+                        { name: "ليونيل ميسي", alt: ["messi", "ميسي"], value: "129 هدف" },
+                        { name: "روبرت ليفاندوفسكي", alt: ["lewandowski", "ليفاندوفسكي"], value: "94 هدف" },
+                        { name: "كريم بنزيما", alt: ["benzema", "بنزيما"], value: "90 هدف" },
+                        { name: "راؤول غونزاليس", alt: ["raul", "راؤول"], value: "71 هدف" },
+                        { name: "رود فان نيستلروي", alt: ["nistelrooy", "نيستلروي"], value: "56 هدف" },
+                        { name: "توماس مولر", alt: ["muller", "مولر"], value: "54 هدف" },
+                        { name: "تييري هنري", alt: ["henry", "هنري"], value: "50 هدف" },
+                        { name: "زلاتان إبراهيموفيتش", alt: ["ibrahimovic", "زلاتان"], value: "48 هدف" },
+                        { name: "أندري شيفتشينكو", alt: ["shevchenko", "شيفتشينكو"], value: "48 هدف" }
+                    ]
+                },
+                {
+                    title: "أكثر 10 لاعبين تسجيلاً للأهداف الدولية في التاريخ",
+                    metricName: "الأهداف الدولية",
+                    answers: [
+                        { name: "كريستيانو رونالدو", alt: ["ronaldo", "رونالدو", "cr7"], value: "133 هدف" },
+                        { name: "علي دائي", alt: ["ali daei", "علي داي"], value: "109 هدف" },
+                        { name: "ليونيل ميسي", alt: ["messi", "ميسي"], value: "112 هدف" },
+                        { name: "كريستين سينكلير", alt: ["christine sinclair"], value: "190 هدف" },
+                        { name: "أبي وامباك", alt: ["abby wambach"], value: "184 هدف" },
+                        { name: "مارتا", alt: ["marta"], value: "116 هدف" },
+                        { name: "بشار عبد الله", alt: ["bashar abdullah"], value: "105 هدف" },
+                        { name: "سونيل تشيتري", alt: ["sunil chhetri"], value: "94 هدف" },
+                        { name: "مختار داهاري", alt: ["mokhtar dahari"], value: "89 هدف" },
+                        { name: "فيريندك پوشكاش", alt: ["puskas", "بوشكاش"], value: "84 هدف" }
+                    ]
+                }
+            ],
+            movies: [
+                {
+                    title: "أكثر 10 أفلام تحقيقاً للإيرادات في تاريخ السينما",
+                    metricName: "الإيرادات",
+                    answers: [
+                        { name: "أفاتار", alt: ["avatar", "avatar 1"], value: "2.92 مليار" },
+                        { name: "افينجرز اند جيم", alt: ["avengers endgame", "أفنجرز"], value: "2.79 مليار" },
+                        { name: "تيتانيك", alt: ["titanic"], value: "2.26 مليار" },
+                        { name: "ستار وورز ذا فورس اويكينز", alt: ["star wars the force awakens"], value: "2.07 مليار" },
+                        { name: "أفاتار ذا ويه أوف ووتر", alt: ["avatar 2", "أفاتار 2"], value: "2.32 مليار" },
+                        { name: "افينجرز إنفينيتي وور", alt: ["avengers infinity war"], value: "2.04 مليار" },
+                        { name: "سبايدر مان نوي ويه هوم", alt: ["spider man no way home"], value: "1.92 مليار" },
+                        { name: "جوراْسيك وورلد", alt: ["jurassic world"], value: "1.67 مليار" },
+                        { name: "ذا لايون كينغ", alt: ["the lion king"], value: "1.66 مليار" },
+                        { name: "ذا أفينجرز", alt: ["the avengers"], value: "1.52 مليار" }
+                    ]
+                }
+            ]
+        };
+
+        let currentQuestion = null;
+        let foundAnswers = [];
+        let wrongAttempts = 5;
+        let isGameOver = false;
+
+        window.onload = function() {
+            updateQuestionsList();
+        };
+
+        function updateQuestionsList() {
+            const cat = document.getElementById('categorySelect').value;
+            const qSelect = document.getElementById('questionSelect');
+            qSelect.innerHTML = '';
+            database[cat].forEach((q, index) => {
+                let opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = q.title;
+                qSelect.appendChild(opt);
+            });
+        }
+
+        function startSelectedGame() {
+            const cat = document.getElementById('categorySelect').value;
+            const qIndex = document.getElementById('questionSelect').value;
+            initGame(database[cat][qIndex]);
+        }
+
+        function startRandomGame() {
+            let allQuestions = [];
+            for (let cat in database) {
+                allQuestions = allQuestions.concat(database[cat]);
+            }
+            const randomIndex = Math.floor(Math.random() * allQuestions.length);
+            initGame(allQuestions[randomIndex]);
+        }
+
+        function initGame(questionObj) {
+            currentQuestion = questionObj;
+            foundAnswers = new Array(currentQuestion.answers.length).fill(false);
+            wrongAttempts = 5;
+            isGameOver = false;
+
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('activeQuestionTitle').textContent = currentQuestion.title;
+            document.getElementById('metricHeader').textContent = currentQuestion.metricName;
+            
+            document.getElementById('guessInput').value = '';
+            document.getElementById('guessInput').disabled = false;
+            
+            renderTable();
+            updateStats();
+        }
+
+        function backToSetup() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('setupScreen').style.display = 'flex';
+        }
+
+        function renderTable(revealedAll = false) {
+            const tbody = document.getElementById('answersTableBody');
+            tbody.innerHTML = '';
+
+            currentQuestion.answers.forEach((ans, index) => {
+                let tr = document.createElement('tr');
+                let isFound = foundAnswers[index];
+
+                if (isFound) {
+                    tr.className = 'row-revealed';
+                    tr.innerHTML = `<td>${index + 1}</td><td><strong>${ans.name}</strong></td><td style="text-align: left;">${ans.value}</td>`;
+                } else if (revealedAll) {
+                    tr.className = 'row-surrendered';
+                    tr.innerHTML = `<td>${index + 1}</td><td>${ans.name}</td><td style="text-align: left;">${ans.value}</td>`;
+                } else {
+                    tr.className = 'row-hidden';
+                    tr.innerHTML = `<td>${index + 1}</td><td>????????</td><td style="text-align: left;">-</td>`;
+                }
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateStats() {
+            const score = foundAnswers.filter(Boolean).length;
+            document.getElementById('scoreCounter').textContent = `الإجابات الصحيحة: ${score} / 10`;
+            document.getElementById('heartsDisplay').textContent = '❤️'.repeat(wrongAttempts);
+        }
+
+        function handleInput() {
+            if (isGameOver) return;
+            const inputVal = document.getElementById('guessInput').value.trim();
+            const box = document.getElementById('suggestionsBox');
+
+            if (inputVal.length < 2) {
+                box.style.display = 'none';
+                return;
+            }
+
+            checkGuess(inputVal, true);
+
+            let matches = [];
+            currentQuestion.answers.forEach((ans, idx) => {
+                if (!foundAnswers[idx]) {
+                    if (ans.name.includes(inputVal) || ans.alt.some(a => a.includes(inputVal))) {
+                        matches.push(ans.name);
+                    }
+                }
+            });
+
+            if (matches.length > 0) {
+                box.innerHTML = '';
+                matches.slice(0, 5).forEach(m => {
+                    let div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.textContent = m;
+                    div.onclick = function() {
+                        document.getElementById('guessInput').value = m;
+                        box.style.display = 'none';
+                        checkGuess(m, false);
+                    };
+                    box.appendChild(div);
+                });
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+            }
+        }
+
+        function cleanText(txt) {
+            return txt.toLowerCase()
+                .replace(/[أإآا]/g, 'ا')
+                .replace(/ة/g, 'ه')
+                .replace(/ى/g, 'ي')
+                .replace(/[^a-z0-9أ-ي]/g, '');
+        }
+
+        function checkGuess(val, isTypingCheck) {
+            if (isGameOver) return;
+            const cleanedInput = cleanText(val);
+            if (!cleanedInput) return;
+
+            let matchedIndex = -1;
+
+            currentQuestion.answers.forEach((ans, idx) => {
+                if (!foundAnswers[idx]) {
+                    let mainClean = cleanText(ans.name);
+                    let altCleans = ans.alt.map(a => cleanText(a));
+
+                    if (cleanedInput === mainClean || altCleans.includes(cleanedInput)) {
+                        matchedIndex = idx;
+                    }
+                }
+            });
+
+            if (matchedIndex !== -1) {
+                foundAnswers[matchedIndex] = true;
+                document.getElementById('guessInput').value = '';
+                document.getElementById('suggestionsBox').style.display = 'none';
+                renderTable();
+                updateStats();
+
+                if (foundAnswers.every(Boolean)) {
+                    alert('🎉 كفو! ختمت اللعبة بذكاء!');
+                    isGameOver = true;
+                }
+            } else if (!isTypingCheck) {
+                wrongAttempts--;
+                document.getElementById('guessInput').value = '';
+                document.getElementById('suggestionsBox').style.display = 'none';
+                updateStats();
+
+                if (wrongAttempts <= 0) {
+                    isGameOver = true;
+                    alert('❌ خلصت محاولاتك!');
+                    surrenderGame();
+                }
+            }
+        }
+
+        document.getElementById('guessInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkGuess(this.value, false);
+            }
+        });
+
+        function surrenderGame() {
+            isGameOver = true;
+            document.getElementById('guessInput').disabled = true;
+            document.getElementById('suggestionsBox').style.display = 'none';
+            renderTable(true);
+        }
+
+        function restartGame() {
+            initGame(currentQuestion);
+        }
+    </script>
+</body>
+</html>
