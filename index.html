@@ -254,8 +254,10 @@
             <div class="select-group">
                 <label>اختر التصنيف:</label>
                 <select id="categorySelect" onchange="updateQuestionsList()">
-                    <option value="games">ألعاب فيديو</option>
-                    <option value="football">كرة قدم</option>
+                    <option value="games">🎮 ألعاب فيديو</option>
+                    <option value="football">⚽ كرة قدم</option>
+                    <option value="movies">🎬 أفلام ومسلسلات</option>
+                    <option value="tech">💻 تقنية وتطبيقات</option>
                 </select>
             </div>
             <div class="select-group">
@@ -306,12 +308,12 @@
         </div>
 
         <div class="download-guide">
-            💡 لحفظ الموقع: انسخ الكود، احفظه في ملف <code>index.html</code> وارفعـه على <a href="https://app.netlify.com/drop" target="_blank" style="color:var(--primary-green);">Netlify Drop</a> مجاناً!
+            💡 تم تحديث اللعبة بأقسام وأسئلة جديدة كلياً!
         </div>
     </div>
 
     <script>
-        // قاعدة البيانات للأسئلة
+        // قاعدة البيانات الموسعة للأسئلة
         const database = {
             games: [
                 {
@@ -339,7 +341,7 @@
                         { name: "بوكيمون", alt: ["pokemon"], value: "480 مليون" },
                         { name: "كول آف ديوتي", alt: ["call of duty", "cod"], value: "425 مليون" },
                         { name: "جي تي إيه", alt: ["gta", "grand theft auto"], value: "410 مليون" },
-                        { name: "فييفا", alt: ["fifa", "ea sports fc"], value: "325 مليون" },
+                        { name: "فيفا", alt: ["fifa", "ea sports fc"], value: "325 مليون" },
                         { name: "مينكرافت", alt: ["minecraft"], value: "300 مليون" },
                         { name: "ليغو", alt: ["lego"], value: "200 مليون" },
                         { name: "ذا سيمز", alt: ["the sims"], value: "200 مليون" },
@@ -362,6 +364,58 @@
                         { name: "تييري هنري", alt: ["henry", "هنري"], value: "50 هدف" },
                         { name: "زلاتان إبراهيموفيتش", alt: ["ibrahimovic", "زلاتان"], value: "48 هدف" },
                         { name: "أندري شيفتشينكو", alt: ["shevchenko", "شيفتشينكو"], value: "48 هدف" }
+                    ]
+                },
+                {
+                    title: "أكثر 10 لاعبين تسجيلاً للأهداف الدولية في التاريخ",
+                    metricName: "الأهداف الدولية",
+                    answers: [
+                        { name: "كريستيانو رونالدو", alt: ["ronaldo", "رونالدو", "cr7"], value: "133 هدف" },
+                        { name: "علي دائي", alt: ["ali daei", "علي داي"], value: "109 هدف" },
+                        { name: "ليونيل ميسي", alt: ["messi", "ميسي"], value: "112 هدف" },
+                        { name: "كريستين سينكلير", alt: ["christine sinclair"], value: "190 هدف" },
+                        { name: "أبي وامباك", alt: ["abby wambach"], value: "184 هدف" },
+                        { name: "مارتا", alt: ["marta"], value: "116 هدف" },
+                        { name: "بشار عبد الله", alt: ["bashar abdullah"], value: "105 هدف" },
+                        { name: "سونيل تشيتري", alt: ["sunil chhetri"], value: "94 هدف" },
+                        { name: "مختار داهاري", alt: ["mokhtar dahari"], value: "89 هدف" },
+                        { name: "فيريندك پوشكاش", alt: ["puskas", "بوشكاش"], value: "84 هدف" }
+                    ]
+                }
+            ],
+            movies: [
+                {
+                    title: "أكثر 10 أفلام تحقيقاً للإيرادات في تاريخ السينما",
+                    metricName: "الإيرادات العالمية",
+                    answers: [
+                        { name: "أفاتار", alt: ["avatar", "avatar 1"], value: "2.92 مليار" },
+                        { name: "افينجرز اند جيم", alt: ["avengers endgame", "انتيجرز", "أفنجرز"], value: "2.79 مليار" },
+                        { name: "تيتانيك", alt: ["titanic"], value: "2.26 مليار" },
+                        { name: "ستار وورز ذا فورس اويكينز", alt: ["star wars the force awakens", "ستار وورز"], value: "2.07 مليار" },
+                        { name: "أفاتار ذا ويه أوف ووتر", alt: ["avatar 2", "أفاتار 2"], value: "2.32 مليار" },
+                        { name: "فينجرز إنفينيتي وور", alt: ["avengers infinity war", "انفينيتي وور"], value: "2.04 مليار" },
+                        { name: "سبايدر مان نوي ويه هوم", alt: ["spider man no way home", "سبايدر مان"], value: "1.92 مليار" },
+                        { name: "جوراْسيك وورلد", alt: ["jurassic world"], value: "1.67 مليار" },
+                        { name: "ذا لايون كينغ", alt: ["the lion king", "الاسد الملك"], value: "1.66 مليار" },
+                        { name: "ذا أفينجرز", alt: ["the avengers"], value: "1.52 مليار" }
+                    ]
+                }
+            ],
+            tech: [
+                {
+                    title: "أكثر 10 تطبيقات تم تحميرها في العالم (أو استخداماً)",
+                    metricName: "الشركة المالكة",
+                    answers: [
+                        { name: "فيس بوك", alt: ["facebook", "ميتا"], value: "ميتا" },
+                        { name: "يوتيوب", alt: ["youtube"], value: "جوجل" },
+                        { name: "واتساب", alt: ["whatsapp"], value: "ميتا" },
+                        { name: "انستغرام", alt: ["instagram", "انستا"], value: "ميتا" },
+                        { name: "تيك توك", alt: ["tiktok"], value: "بايت دانس" },
+                        { name: "فيس بوك مسنجر", alt: ["messenger", "مسنجر"], value: "ميتا" },
+                        { name: "تليجرام", alt: ["telegram"], value: "تليجرام" },
+                        { name: "سناب شات", alt: ["snapchat", "سناب"], value: "سناب إنك" },
+                        { name: "نتفليكس", alt: ["netflix"], value: "نتفليكس" },
+                        { name: "سبوتيفاي", alt: ["spotify"], value: "سبوتيفاي" }
                     ]
                 }
             ]
@@ -395,12 +449,10 @@
         }
 
         function startRandomGame() {
-            // تجميع كل الأسئلة من كل التصنيفات
             let allQuestions = [];
             for (let cat in database) {
                 allQuestions = allQuestions.concat(database[cat]);
             }
-            // اختيار سؤال عشوائي
             const randomIndex = Math.floor(Math.random() * allQuestions.length);
             initGame(allQuestions[randomIndex]);
         }
